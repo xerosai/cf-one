@@ -1,0 +1,29 @@
+{#
+    # File: _items.html
+    # Desc:
+    # Date: December 01, 2016 @ 9:51 PM
+    # Auth: Simon Neufville (simon@xrscodeworks.com) / xerosai
+#}
+
+{% macro render_item_in_list(item_data) %}
+    {% if item_data %}
+        <div class="col-md-4 col-sm-6">
+            <img src="{{ url_for('static', filename='assets/img/'+item_data.item_img) }}" style="object-fit: cover; height: 300px; width: 100%;">
+            <h3>
+                <a href="{{ url_for('client_get_items', id=item_data.object_id) }}">
+                    <i class="fa fa-cube fa-fw"></i> {{ item_data.item_name | title }}
+                </a>
+            </h3>
+            <p class="lead"><label class="label label-primary"><i class="fa fa-tag fa-fw"></i>{{ item_data.item_type | replace('-', ' ') | title }}</label></p>
+            <p class="lead">{{ item_data.item_desc | truncate(100) }}</p>
+            <div class="row">
+            {% for spec in item_data.item_cost_spec %}
+                <div class="col-md-4">
+                    <p class="lead"><strong>{{ spec.spec_item_size | title }}:</strong> ${{ spec.spec_item_cost | round(2) }}</p>
+                </div>
+            {% endfor %}
+            </div>
+        </div>
+    {% else %}
+    {% endif %}
+{% endmacro %}

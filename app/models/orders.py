@@ -31,6 +31,7 @@ class Orders(mongoengine.Document):
     assoc_user = mongoengine.ReferenceField(UserProfiles, required=True)
     order_status = mongoengine.StringField(required=True, choices=['new', 'in_progress', 'ready'], default='new')
     order_items = mongoengine.EmbeddedDocumentListField(OrderItem, required=True)
+    updated_by = mongoengine.ReferenceField(UserProfiles)
 
     @mongoengine.queryset_manager
     def objects(self, queryset):

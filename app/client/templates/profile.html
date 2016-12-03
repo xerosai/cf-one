@@ -1,0 +1,93 @@
+{#
+    # File: profile.html
+    # Desc:
+    # Date: December 02, 2016 @ 10:01 PM
+    # Auth: Simon Neufville (simon@xrscodeworks.com) / xerosai
+#}
+
+{% extends '_base.html' %}
+{% from 'partials/_login.html' import render_user_li %}
+
+{% block user_link %}
+    {{ render_user_li(current_user) }}
+{% endblock %}
+
+{% block main_content %}
+    <div class="row">
+        <div class="col-md-12">
+            <form class="form">
+                <div class="form-group">
+                    <label for="display-name">Display Name</label>
+                    <input class="form-control" type="text" id="profile-display-name"/>
+                </div>
+                <button class="btn btn-primary btn-block" id="update-profile" type="button">
+                    Save Information
+                </button>
+            </form>
+        </div>
+    </div>
+    <script>
+        var jwtToken = {% if user_token %}'{{ user_token }}'{% else %}undefined{% endif %};
+        var profileData = {{ user_data | tojson | safe }};
+
+        if (profileData) {
+            $("#profile-display-name").val(profileData['display_name']);
+        }
+
+        function saveProfile() {
+            $.ajax({
+                url: '//localhost:7200/profiles/self',
+                headers: headers,
+                contentType: 'application/json',
+                crossOrigin: true,
+                type: "POST",
+                dataType: 'json',
+                data: JSON.stringify(tmpData),
+                success: function (data) {
+                    resetControls();
+                    console.log(data);
+                    var actionResult = data['action_result'] ? data['action_result'] : undefined;
+
+                    if (actionResult == true) {
+                        bootbox.confirm({
+                            size: 'medium',
+                            title: 'Update Profile',
+                            message: 'Your profile was updated successfully. Would you like to go back to the home page?',
+                            buttons: {
+                                confirm: {
+                                    label: 'Yes'
+                                },
+                                cancel: {
+                                    label: 'No'
+                                }
+                            },
+                            callback: function (result) {
+                                if (result == true) {
+                                    $(location).attr('href', "{{ url_for('client_main') }}");
+                                }
+                            }
+                        })
+                    } else {
+                        bootbox.alert({
+                            size: 'medium',
+                            title: 'Update Profile',
+                            message: 'Something went wrong while trying to update your profile.'
+                        })
+                    }
+                },
+                error: function (e) {
+                    resetControls();
+                    bootbox.alert({
+                        size: 'medium',
+                        title: 'Update Profile',
+                        message: 'Failed to update profile with error: ' + e.message
+                    });
+                }
+            })
+        }
+
+        $("#update-profile").click(function () {
+            console.log("update profile")
+        })
+    </script>
+{% endblock %}

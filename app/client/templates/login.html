@@ -1,0 +1,83 @@
+{#
+    # File: login.html
+    # Desc:
+    # Date: December 02, 2016 @ 12:08 PM
+    # Auth: Simon Neufville (simon@xrscodeworks.com) / xerosai
+#}
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+        <link rel="icon" href="../../favicon.ico">
+
+        <title>Cafe One - Login</title>
+
+        <!-- Bootstrap core CSS -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
+
+        <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+        <link href="../../assets/css/ie10-viewport-bug-workaround.css" rel="stylesheet">
+
+        <!-- Custom styles for this template -->
+        <link href="{{ url_for('static', filename='assets/css/cover.css') }}" rel="stylesheet">
+
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap-theme.css"
+              integrity="sha256-xOpS+e/dER8z72w+qryCieOGysQI8cELAVt3MHG0phY=" crossorigin="anonymous"/>
+
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+
+        <script src="https://cdn.auth0.com/js/lock/10.4/lock.min.js"></script>
+    </head>
+
+    <body>
+
+        <div class="site-wrapper">
+
+            <div class="site-wrapper-inner">
+
+                <div class="cover-container">
+
+                    <div class="inner cover">
+                        <h1 class="cover-heading">Welcome to Cafe One</h1>
+                        <script>
+                            var lock = new Auth0Lock('82ntE2IRMnhbWfceahGeEVUOawzBK7BE', 'xrscodeworks.auth0.com', {
+                                auth: {
+                                    redirectUrl: 'http://0.0.0.0:7200/authorize',
+                                    responseType: 'code',
+                                    params: {
+                                        scope: 'openid email' // Learn about scopes: https://auth0.com/docs/scopes
+                                    }
+                                }
+                            });
+                        </script>
+                        <br>
+                        <button class="btn btn-primary btn-lg" onclick="lock.show();"><i class="fa fa-lock fa-fw"></i> Login</button>
+                    </div>
+
+                    <div class="mastfoot">
+                        <div class="inner">
+                            <p>Copyright &copy; Cafe One.</p>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Bootstrap core JavaScript
+        ================================================== -->
+        <!-- Placed at the end of the document so the pages load faster -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+        <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+        <script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>
+    </body>
+</html>
+

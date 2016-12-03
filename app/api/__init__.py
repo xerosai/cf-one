@@ -5,4 +5,5 @@
 
 from .orders import *
 from .order_items import *
+from .store_locations import *
 from .user_profiles import *

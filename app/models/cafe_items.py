@@ -29,6 +29,7 @@ class CafeItemCostSpec(mongoengine.EmbeddedDocument):
 class CafeItems(mongoengine.Document):
     created_at = mongoengine.DateTimeField(required=True, default=datetime.datetime.now)
     updated_at = mongoengine.DateTimeField()
+    item_img = mongoengine.StringField(required=True)
     item_name = mongoengine.StringField(required=True, min_length=5)
     item_desc = mongoengine.StringField(required=True, min_length=10)
     item_type = mongoengine.StringField(required=True, min_length=3)
@@ -45,6 +46,7 @@ class CafeItems(mongoengine.Document):
     @staticmethod
     def get_required_fields():
         return [
+            MoCon.CAFE_ITEM_IMG,
             MoCon.CAFE_ITEM_NAME,
             MoCon.CAFE_ITEM_DESC,
             MoCon.CAFE_ITEM_TYPE,
@@ -55,11 +57,16 @@ class CafeItems(mongoengine.Document):
         output = {
             MoCon.COMMON_OBJECT_ID: str(self.id),
             MoCon.COMMON_CREATED_AT: self.created_at.isoformat(),
+            MoCon.CAFE_ITEM_IMG: self.item_img,
             MoCon.CAFE_ITEM_NAME: self.item_name,
             MoCon.CAFE_ITEM_DESC: self.item_desc,
             MoCon.CAFE_ITEM_TYPE: self.item_type,
-            MoCon.CAFE_ITEM_COST_SPEC: self.item_cost_spec
+            MoCon.CAFE_ITEM_COST_SPEC: [
+                i.to_dict() if getattr(i, 'to_dict', None) else i.to_json() for i in self.item_cost_spec
+            ]
         }
+        if self.item_img:
+            output[MoCon.CAFE_ITEM_IMG] = self.item_img
 
         if self.updated_at:
             output[MoCon.COMMON_UPDATED_AT] = self.updated_at

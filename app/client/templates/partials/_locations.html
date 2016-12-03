@@ -1,0 +1,20 @@
+{#
+    # File: _locations.html
+    # Desc:
+    # Date: December 02, 2016 @ 9:13 PM
+    # Auth: Simon Neufville (simon@xrscodeworks.com) / xerosai
+#}
+
+{% macro render_store_location_list(location_data) %}
+    <div class="col-md-12">
+        {% if location_data %}
+            <img src="{{ url_for('static', filename='assets/img/' + location_data.image_path) }}"
+                 style="object-fit: cover; width: 100%; height: 200px;">
+            <h3><a href="{{ url_for('client_locations', id=location_data.object_id) }}">{{ location_data.store_name }}</a></h3>
+            <p>{{ location_data.store_addr }}, {{ location_data.store_city }}, {{ location_data.country }}</p>
+        {% else %}
+            <p class="text-center text-danger"><i class="fa fa-exclamation-circle fa-fw"></i></p>
+            <h2 class="text-center text-danger">Failed to load location</h2>
+        {% endif %}
+    </div>
+{% endmacro %}

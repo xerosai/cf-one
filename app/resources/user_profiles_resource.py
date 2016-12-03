@@ -4,6 +4,7 @@
 # Auth: Simon Neufville (simon@xrscodeworks.com) / xerosai
 
 
+import mongoengine
 import sys
 from app.constants.response_constants import ResponseConstants as ReCon
 from app.models.orders import Orders
@@ -15,6 +16,47 @@ from .model_resource import ModelResource
 class UserProfilesResource(ModelResource):
     model_or_none = UserProfiles
 
+    def get_user_by_auth(self, auth_id=None, user_data=None):
+        """
+        Given an auth0 identifier, returns a user or none
+        :param auth_id:
+        :param user_data:
+        :return:
+        """
+        print("get user by auth")
+        if not auth_id:
+            print('no auth id')
+            return None
+
+        try:
+            profile = UserProfiles.objects(auth0_id=auth_id).get()
+        except mongoengine.DoesNotExist:
+            print('does not exist')
+            if not user_data or type(user_data) is not dict:
+                print(sys.exc_info())
+                return None
+
+            user_info = {
+                'auth0_id': user_data['user_id'],
+                'display_picture': user_data['picture'],
+                'display_name': user_data['name'],
+                'email_address': user_data['email']
+            }
+            print(user_info)
+            profile = UserProfiles(**user_info)
+            try:
+                profile.save()
+            except:
+                print(sys.exc_info())
+                return None
+            else:
+                self.get_user_by_auth(auth_id=auth_id, user_data=user_data)
+        except:
+            print(sys.exc_info())
+            return None
+        else:
+            return profile.to_dict() if getattr(profile, 'to_dict', None) else profile.to_json()
+
     def get_user_orders(self, user_id=None, page=0, ipp=10):
         """
         Given a user id, gets orders for a user.
@@ -23,7 +65,6 @@ class UserProfilesResource(ModelResource):
         user_id -- the user's object id
         page -- the page
         ipp -- the number of items returned per 'page'
-        :return:
         """
         response = ActionResponse(action_name='get_orders_for_user')
 

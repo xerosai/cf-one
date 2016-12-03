@@ -1,0 +1,58 @@
+{#
+    # File: dashboard.html
+    # Desc:
+    # Date: December 02, 2016 @ 2:11 AM
+    # Auth: Simon Neufville (simon@xrscodeworks.com) / xerosai
+#}
+
+{% extends '_base.html' %}
+{% from 'partials/_items.html' import render_item_in_list %}
+{% from 'partials/_locations.html' import render_store_location_list %}
+{% from 'partials/_login.html' import render_user_li %}
+
+{% block user_link %}
+    {{ render_user_li(current_user) }}
+{% endblock %}
+
+{% block main_content %}
+    <div class="jumbotron">
+        <h1>Welcome to Cafe One</h1>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
+            magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
+            commodo consequat</p>
+    </div>
+    <h2><i class="fa fa-cube fa-fw"></i> Freshly Added Items</h2>
+    <hr>
+    <div class="row">
+        {% set action_result = item_data.action_result %}
+        {% if action_result == True %}
+            {% set item_list = item_data.action_data.data_set %}
+            {% for item in item_list %}
+                {{ render_item_in_list(item) }}
+            {% endfor %}
+        {% else %}
+            <div class="col-md-12">
+                <p class="text-center text-info"><i class="fa fa-info-circle fa-5x"></i></p>
+                <h2 class="text-center text-info">Looks like no items were found</h2>
+            </div>
+        {% endif %}
+    </div>
+    <br>
+    <h2><i class="fa fa-building fa-fw"></i> Our Locations</h2>
+    <hr>
+    <div class="row">
+        {% set store_result = store_data.action_result %}
+        {% if store_result == True %}
+            {% set store_list = store_data.action_data.data_set %}
+            {% for store in store_list %}
+                {{ render_store_location_list(store) }}
+            {% endfor %}
+        {% else %}
+            <div class="col-md-12">
+                <p class="text-center text-info"><i class="fa fa-info-circle fa-5x"></i></p>
+                <h2 class="text-center text-info">Looks like no stores were found</h2>
+            </div>
+        {% endif %}
+    </div>
+
+{% endblock %}

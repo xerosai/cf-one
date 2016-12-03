@@ -1,0 +1,48 @@
+{#
+    # File: locations.html
+    # Desc:
+    # Date: December 02, 2016 @ 9:06 PM
+    # Auth: Simon Neufville (simon@xrscodeworks.com) / xerosai
+#}
+
+{% extends '_base.html' %}
+{% from 'partials/_locations.html' import render_store_location_list %}
+{% from 'partials/_login.html' import render_user_li %}
+
+{% block user_link %}
+    {{ render_user_li(current_user) }}
+{% endblock %}
+
+{% block main_content %}
+    <br>
+    <h2><i class="fa fa-building fa-fw"></i> Locations</h2>
+    <p>Stop by any of our locations to get the Cafe One experience</p>
+    <hr>
+    <div class="row">
+        {% if store_list_data %}
+            {% set action_result = store_listing_data.action_result %}
+            {% if action_result == True %}
+                {% set data_set = store_listing_data.action_data.data_set %}
+                {% for store in data_set %}
+                    {{ render_store_location_list(store) }}
+                {% endfor %}
+                {% if data_set | length == 0 %}
+                    <div class="col-md-12">
+                        <p class="text-center text-danger"><i class="fa fa-info-circle fa-fw fa-5x"></i></p>
+                        <h2 class="text-center text-danger">No locations were found.</h2>
+                    </div>
+                {% endif %}
+            {% else %}
+                <div class="col-md-12">
+                    <p class="text-center text-danger"><i class="fa fa-info-circle fa-fw fa-5x"></i></p>
+                    <h2 class="text-center text-danger">No locations were found.</h2>
+                </div>
+            {% endif %}
+        {% else %}
+            <div class="col-md-12">
+                <p class="text-center text-danger"><i class="fa fa-info-circle fa-fw fa-5x"></i></p>
+                <h2 class="text-center text-danger">No locations were found.</h2>
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}

@@ -1,0 +1,31 @@
+{#
+    # File: items.html
+    # Desc: Item listing screen
+    # Date: December 01, 2016 @ 5:48 PM
+    # Auth: Simon Neufville (simon@xrscodeworks.com) / xerosai
+#}
+
+{% extends '_base.html' %}
+{% from 'partials/_items.html' import render_item_in_list %}
+{% from 'partials/_login.html' import render_user_li %}
+
+{% block user_link %}
+    {{ render_user_li(current_user) }}
+{% endblock %}
+
+{% block main_content %}
+    <h2><i class="fa fa-cube fa-fw"></i> Items</h2>
+    <hr>
+    <div class="row">
+    {% if item_listing %}
+        {% set action_result = item_listing.action_result %}
+        {% if action_result == True %}
+            {% set data_set = item_listing.action_data.data_set %}
+            {% for item in data_set %}
+                {{ render_item_in_list(item) }}
+            {% endfor %}
+        {% endif %}
+    {% else %}
+    {% endif %}
+    </div>
+{% endblock %}

@@ -1,0 +1,67 @@
+{#
+# File: item.html
+# Desc:
+# Date: December 01, 2016 @ 5:54 PM
+# Auth: Simon Neufville (simon@xrscodeworks.com) / xerosai
+#}
+
+{% extends '_base.html' %}
+{% from 'partials/_items.html' import render_item_in_list %}
+{% from 'partials/_login.html' import render_user_li %}
+
+{% block user_link %}
+    {{ render_user_li(current_user) }}
+{% endblock %}
+
+
+{% block main_content %}
+
+    {% if item_data %}
+        {% set action_result = item_data.action_result %}
+        {% if action_result == True %}
+            {% set item = item_data.action_data.data_item %}
+            <div class="row">
+                <div class="col-md-12">
+                    <img src="{{ url_for('static', filename='assets/img/' + item.item_img) }}"
+                         style="object-fit: cover; height: 460px; width: 100%">
+                    <h2><i class="fa fa-cube fa-fw"></i> {{ item.item_name | title }}</h2>
+                    <p class="lead"><span><label class="label label-primary"><i
+                            class="fa fa-tag fa-fw"></i> {{ item.item_type | replace('-', ' ') | title }}</label></span>
+                    </p>
+                    <p class="lead">{{ item.item_desc }}</p>
+                    <h3>Sizes Available</h3>
+                    <hr>
+                    <div class="row">
+                        {% for spec in item.item_cost_spec %}
+                            <div class="col-md-4">
+                                <p class="lead"><strong>{{ spec.spec_item_size | title }}:</strong>
+                                    ${{ spec.spec_item_cost }}</p>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            <h2>Related Items</h2>
+            <div class="row">
+                {% set related_items = item_data.action_data.related_items %}
+                {% for rel_item in related_items %}
+                    {{ render_item_in_list(rel_item) }}
+                {% endfor %}
+                {% if related_items | length == 0 %}
+                    <div class="col-md-12">
+                        <p class="text-info text-center"><i class="fa fa-info-circle fa-fw fa-3x"></i></p>
+                        <h2 class="text-info text-center">No related items</h2>
+                    </div>
+                {% endif %}
+            </div>
+        {% else %}
+            <div class="row">
+                <div class="col-md-12">
+                    <p class="text-danger text-center"><i class="fa fa-exclamation-triangle fa-5x"></i></p>
+                    <h2 class="text-center text-danger">Item not found</h2>
+                </div>
+            </div>
+        {% endif %}
+    {% else %}
+    {% endif %}
+{% endblock %}

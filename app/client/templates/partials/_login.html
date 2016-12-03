@@ -1,0 +1,53 @@
+{#
+# File: _login.html
+# Desc:
+# Date: December 02, 2016 @ 2:05 AM
+# Auth: Simon Neufville (simon@xrscodeworks.com) / xerosai
+#}
+
+{% macro render_user_li(current_user) %}
+    {% if current_user %}
+        <li class="dropdown">
+            <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                <i class="fa fa-shopping-basket"></i> Orders
+            </a>
+        <ul class="dropdown-menu">
+            <li><a class="disabled">Coming Soon!</a></li>
+        </ul>
+        </li>
+        <li class="dropdown">
+            <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                <i class="fa fa-user fa-fw"></i> {{ current_user.display_name }}
+            </a>
+            <ul class="dropdown-menu">
+{#                <li><a href="{{ url_for('client_get_profile_self') }}"><i class="fa fa-user-circle fa-fw"></i> View Profile</a></li>#}
+                <li><a href="{{ url_for('client_logout') }}"><i class="fa fa-sign-out fa-fw"></i> Logout</a></li>
+            </ul>
+        </li>
+    {% else %}
+        <li>
+            <a id="nav-login" role="button"><i class="fa fa-lock fa-fw"></i> Login</a>
+        </li>
+    {% endif %}
+    {% if not current_user %}
+        <script>
+            var lock = new Auth0Lock('82ntE2IRMnhbWfceahGeEVUOawzBK7BE', 'xrscodeworks.auth0.com', {
+                auth: {
+                    redirectUrl: 'http://0.0.0.0:7200/authorize',
+                    responseType: 'code',
+                    params: {
+                        scope: 'openid email' // Learn about scopes: https://auth0.com/docs/scopes
+                    }
+                }
+            });
+
+            $("#nav-login").click(function () {
+                lock.show();
+            })
+        </script>
+    {% else %}
+        <script>
+
+        </script>
+    {% endif %}
+{% endmacro %}

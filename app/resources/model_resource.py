@@ -105,8 +105,8 @@ class ModelResource(object):
         if page < 0 or type(page) is not int:
             page = 0
 
-        if ipp < 10 or type(ipp) is not int:
-            ipp = 0
+        if ipp < 3 or type(ipp) is not int:
+            ipp = 10
 
         if not query_doc or type(query_doc) is not dict:
             query_doc = {}

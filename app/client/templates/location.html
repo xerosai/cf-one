@@ -1,0 +1,27 @@
+{#
+    # File: location.html
+    # Desc:
+    # Date: December 02, 2016 @ 9:20 PM
+    # Auth: Simon Neufville (simon@xrscodeworks.com) / xerosai
+#}
+
+{% extends '_base.html' %}
+{% from 'partials/_login.html' import render_user_li %}
+
+{% block user_link %}
+    {{ render_user_li(current_user) }}
+{% endblock %}
+
+{% block main_content %}
+    <div class="row">
+        <div class="col-md-12">
+            {% if location_data %}
+                <img src="{{ url_for('static', filename='assets/img/' + location_data.image_path) }}" style="object-fit: cover; height: 460px; width: 100%;">
+                <h1>{{ location_data.store_name }}</h1>
+            {% else %}
+                <p class="text-center text-danger"><i class="fa fa-exclamation-circle fa-5x"></i></p>
+                <h2 class="text-center text-danger">Looks like we didn't find any data or something else went wrong :(</h2>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

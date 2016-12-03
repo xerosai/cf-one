@@ -7,13 +7,14 @@ from flask import Flask
 from flask_cors import CORS
 from flask_mongoengine import MongoEngine
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder='client/static', template_folder='client/templates')
 app.config.from_pyfile('app_config.py')
 
 CORS(app=app)
 
 db = MongoEngine(app=app)
-if db:
-    print('db up')
+if not db:
+    print('db not up')
 
 from .api import *
+from .client.views import *
